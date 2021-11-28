@@ -93,7 +93,7 @@ again:	outlet_valve_action?action;
 				outlet_valve_open=1;
 				printf("Outlet valve has opened\n");
 				}
-		   :: (downstream_level==lock_water_level) -> atomic{
+		   :: (downstream_level==lock_water_level && outlet_valve_open==1) -> atomic{
 		   		outlet_valve_open=0;
 				printf("Outlet valve has closed\n");
 				valve_ready ! true;
@@ -163,7 +163,9 @@ again:	printf("again...\n");
 		   :: (my_location==down_gate && destination==Downstream) -> end=1;
 		   :: (my_location==up_gate && destination==Downstream) -> {
 				if :: upstream_door_open==0 -> atomic{
-						downstream_door_action ! Close;
+						downstream_door_open = Close;
+						printf("Downstream door closed\n");
+						inlet_valve_action ! Open;
 						door_ready?true;
 						
 						my_location=inlock;
