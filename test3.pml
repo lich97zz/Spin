@@ -1,5 +1,6 @@
 /* File: hw5.pml */
 ltl p1 { !<> (upstream_door_open==1 && downstream_door_open==1)}
+ltl p2 { [] (upstream_door_open==1 && downstream_door_open==1)}
 /* We will use the following types to keep track of the direction the
 boat is heading and the current location of the boat */
 mtype:heading = {Downstream, Upstream};
@@ -43,7 +44,6 @@ bool end = 0;
 
 proctype lock(){
 {do::	
-	1==1;
 	0<1;
 	if :: (upstream_door_open==1 || inlet_valve_open==1) -> atomic{
 			if :: lock_water_level<upstream_level -> {
