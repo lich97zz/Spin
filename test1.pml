@@ -66,7 +66,7 @@ end_func:
 }
 
 proctype inlet_valve(){
-again:	inlet_valve_action ? action
+again:	inlet_valve_action ? action;
 		if :: (action==Open) -> {
 				inlet_valve_open=1;
 				printf("Inlet valve has opened\n");
