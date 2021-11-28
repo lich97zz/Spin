@@ -33,11 +33,11 @@ again:	input ? in;
 		t1_in = in;
 		if
 			:: in != noop -> {
-				idx >= N;
+				idx < N;
 				atomic{
 					lock = 1;
 					t1_idx = idx;
-					buf[idx]==req1 || buf[idx]==req2 || buf[idx]==noop;
+
 					input ? buf[idx];
 					idx = idx+1;
 					lock = 0;
@@ -52,7 +52,7 @@ again:	input ? in;
 proctype thread2(){
 mtype out;
 again:	t2_exec = !t2_exec;
-		idx == 0;
+		idx > 0;
 		atomic{
 			lock = 1;
 			t2_idx = idx;
