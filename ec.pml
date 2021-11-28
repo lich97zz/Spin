@@ -49,12 +49,13 @@ again:	input ? in;
 }
 
 proctype thread2(){
+mtype out;
 again:	t2_exec = !t2_exec;
 		idx == 0;
 		atomic{
 			lock = 1;
 			t2_idx = idx;
-			out ! buf[idx-1];
+			buf[idx-1] ? out;
 			t2_out = out;
 			idx = idx-1;
 			lock = 0;
