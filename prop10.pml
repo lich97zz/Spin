@@ -1,6 +1,11 @@
 #ifndef N
 #define N 5
 #endif
+
+//for prop10
+mtype t1_in = req2;
+mtype t2_out = req2;
+
 ltl prop10 { [] (t1_in==req1 -> <>(t2_in==req1))}
 
 mtype = {noop, req1, req2};
@@ -10,9 +15,6 @@ int idx = 0;
 int lock = 0;
 int max_len = 1000;
 int i = 0;
-//for prop10
-mtype t1_in = req2;
-mtype t2_out = req2;
 
 //for prop12
 int t1_idx = 0;
