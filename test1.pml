@@ -38,7 +38,8 @@ int downstream_level = 0;
 
 // Current water level in the lock
 int lock_water_level = 3;
-
+// end state
+bool end = 0;
 
 proctype lock(){
 again:	if :: (upstream_door_open==1 || inlet_valve_open==1) -> {
@@ -57,10 +58,11 @@ again:	if :: (upstream_door_open==1 || inlet_valve_open==1) -> {
 				   :: skip;
 				fi;
 		   		}
-		   ::skip;
+		   :: end==1 -> goto end_func;
 		fi;
 
 		goto again	
+end_func:
 
 }
 
