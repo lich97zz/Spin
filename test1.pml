@@ -66,6 +66,7 @@ end_func:
 }
 
 proctype inlet_valve(){
+mtype action;
 again:	inlet_valve_action ? action;
 		if :: (action==Open) -> {
 				inlet_valve_open=1;
