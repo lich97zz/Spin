@@ -5,7 +5,7 @@
 
 mtype = {noop, req1, req2};
 chan input = [5] of {mtype};
-chan buf = [5] of {mtype};
+mtype buf[5];
 int idx = 0;
 int lock = 0;
 
@@ -38,7 +38,7 @@ again:	input ? in;
 					lock = 1;
 					t1_idx = idx;
 
-					input ? buf[idx];
+					buf[idx] = in;
 					idx = idx+1;
 					lock = 0;
 				}
@@ -56,7 +56,7 @@ again:	t2_exec = !t2_exec;
 		atomic{
 			lock = 1;
 			t2_idx = idx;
-			buf[idx-1] ? out;
+			out = buf[idx-1];
 			t2_out = out;
 			idx = idx-1;
 			lock = 0;
