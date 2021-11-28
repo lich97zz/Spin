@@ -20,10 +20,12 @@ int t2_idx = 0;
 //for prop13
 bool t2_exec = 0;
 
+/*
 ltl prop10 { [] (t1_in==req1 ==> <>(t2_in==req1))}
 ltl prop11 { [] ((<>(t1_in==req1) && <>(t1_in==noop)) ==> <>(t2_in==req1))}
 ltl prop12 { [] (t1_idx>=0 && t1_idx<5 && t2_idx>=0 && t2_idx<5)}
 ltl prop13 { [] ((([](<>t2_exec==1)) && (<>(t1_in==req1) && <>(t1_in==noop))) ==> <>(t2_in==req1))}
+*/
 
 proctype thread1(){
 again:	in ? input;
