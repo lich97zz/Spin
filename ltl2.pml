@@ -1,6 +1,6 @@
 /* File: hw5.pml */
 
-ltl p2 { [] ((upstream_door_open==1||downstream_door_open==1) ==>(inlet_valve_open==0 && outlet_valve_open==0))}
+ltl p2 { [] ((upstream_door_open==1||downstream_door_open==1) -> (inlet_valve_open==0 && outlet_valve_open==0))}
 
 mtype:heading = {Downstream, Upstream};
 mtype:loc = {down_gate, up_gate, inlock};
