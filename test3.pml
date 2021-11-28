@@ -51,7 +51,7 @@ proctype lock(){
 :: timeout -> goto end_func
 od}	
 end_func:
-
+	printf("reaching end at pos6\n");
 }
 
 proctype inlet_valve(){
@@ -72,7 +72,7 @@ mtype action;
 :: timeout -> goto end_func
 od}	
 end_func:
-
+	printf("reaching end at pos5\n");
 }
 
 proctype outlet_valve(){
@@ -93,7 +93,7 @@ mtype action;
 :: timeout -> goto end_func
 od}	
 end_func:
-
+	printf("reaching end at pos4\n");
 }
 
 proctype downstream_door(){
@@ -118,7 +118,7 @@ mtype action;
 :: timeout -> goto end_func
 od}	
 end_func:
-
+	printf("reaching end at pos3\n");
 }
 
 
@@ -144,7 +144,7 @@ mtype action;
 :: timeout -> goto end_func
 od}	
 end_func:
-
+	printf("reaching end at pos2\n");
 }
 
 proctype boat(mtype:loc current_location; mtype:heading destination_in) {
@@ -239,16 +239,17 @@ random_destination:
 	goto again
 
 end_func:
+	printf("reaching end at pos1\n");
 }
 
 
 init {
      atomic {
             run lock();
-            //run upstream_door();
-            //run downstream_door();
-            //run outlet_valve();
-            //run inlet_valve();
-            //run boat(up_gate, Downstream)
+            run upstream_door();
+            run downstream_door();
+            run outlet_valve();
+            run inlet_valve();
+            run boat(up_gate, Downstream)
     }
 }
