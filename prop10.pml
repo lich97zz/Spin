@@ -1,7 +1,7 @@
 #ifndef N
 #define N 5
 #endif
-ltl prop10 { [] (t1_in==req1 ==> <>(t2_in==req1))}
+ltl prop10 { [] (t1_in==req1 -> <>(t2_in==req1))}
 
 mtype = {noop, req1, req2};
 chan input = [5] of {mtype};
