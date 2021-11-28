@@ -63,7 +63,6 @@ again:
 		   :: end==1 -> goto end_func;
 		   :: skip;
 		fi;
-		timeout -> goto end_func
 		goto again	
 end_func:
 
