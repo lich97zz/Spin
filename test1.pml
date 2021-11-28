@@ -154,6 +154,62 @@ end_func:
 
 }
 
+proctype boat(mtype:loc current_location; mtype:heading destination_in) {
+destination = destination_in;
+my_location = current_location;
+
+mtype action;
+again:	upstream_door_action ? action;
+		if :: end==1 -> goto end_func;
+		   :: (my_location==up_gate && destination==Upstream) -> end=1;
+		   :: (my_location==down_gate && destination==Downstream) -> end=1;
+		   :: (my_location==up_gate && destination==Downstream) -> {
+				if :: upstream_door_open==0 -> {upstream_door_action!Open; my_location=inlock;}
+				   :: upstream_door_open==1 -> my_location=inlock;
+				fi;
+				}
+		   :: (my_location==inlock && destination==Downstream) -> {
+		   		if :: downstream_door_open==0 -> {
+		   				downstream_door_action!Open;
+		   				my_location=down_gate;
+		   				goto random_destination;
+		   				}
+				   :: downstream_door_open==1 -> {
+				   		my_location==down_gate;
+				   		goto random_destination;
+				   		}
+				fi;
+		   		}
+		   :: (my_location==down_gate && destination==Upstream) -> {
+				if :: downstream_door_open==0 -> {downstream_door_action!Open; my_location=inlock;}
+				   :: downstream_door_open==1 -> my_location=inlock;
+				fi;
+				}
+		   :: (my_location==inlock && destination==Upstream) -> {
+		   		if :: upstream_door_open==0 -> {
+		   				upstream_door_action!Open;
+		   				my_location=up_gate;
+		   				goto random_destination;
+		   				}
+				   :: upstream_door_open==1 -> {
+				   		my_location==up_gate;
+				   		goto random_destination;
+				   		}
+				fi;
+		   		}
+		   //:: skip;
+		fi;
+		goto again	
+
+random_destination:
+	if :: 1==1 -> destination==Downstream;
+	   :: 1==1 -> destination==Upstream;
+	fi;
+	goto again
+end_func:
+
+}
+
 
 
 
