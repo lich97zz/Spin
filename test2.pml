@@ -76,7 +76,7 @@ again:	inlet_valve_action?action;
 		   :: (inlet_valve_open==1 && upstream_level==lock_water_level) -> atomic{
 		   		inlet_valve_open=0;
 				printf("Inlet valve has closed\n");
-				valve_ready ! true;
+				upstream_door_action ? Open;
 		   		}
 		   :: end==1 -> goto end_func;
 		fi;
@@ -130,15 +130,15 @@ end_func:
 
 proctype upstream_door() {
 mtype action;
-again:	
+again:	upstream_door_action ? action;
 		if :: end==1 -> goto end_func;
-		   :: ((valve_ready ? true) || (upstream_door_action ? Open)) -> atomic{
+		   :: (action==Open) -> atomic{
 				upstream_door_open=1;
 				printf("Up gate has opened\n");
 				printf("Up gate sending msg to boat, informing it has opened\n");
 				door_ready ! true;
 				}
-		   :: (upstream_door_action ? Close) -> atomic{
+		   :: (action==Close) -> atomic{
 		   		upstream_door_open=0;
 		   		printf("Up gate has closed\n");
 		   		printf("Up gate sending msg to inlet valve, asking it to open\n");
