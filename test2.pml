@@ -132,7 +132,7 @@ proctype upstream_door() {
 mtype action;
 again:	
 		if :: end==1 -> goto end_func;
-		   :: (valve_ready ? true || upstream_door_action ? Open) -> atomic{
+		   :: ((valve_ready ? true) || (upstream_door_action ? Open)) -> atomic{
 				upstream_door_open=1;
 				printf("Up gate has opened\n");
 				printf("Up gate sending msg to boat, informing it has opened\n");
