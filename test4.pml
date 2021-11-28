@@ -27,7 +27,6 @@ int lock_water_level = 0;
 
 proctype lock(){
 {do::	
-	0<1;
 	if :: (upstream_door_open==1 || inlet_valve_open==1) -> atomic{
 			if :: lock_water_level<upstream_level -> {
 				lock_water_level=lock_water_level+1;
