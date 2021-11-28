@@ -147,6 +147,7 @@ mtype action;
 		   		}
 		fi;
 	} :: skip;
+	fi
 :: timeout -> goto end_func
 od}	
 end_func:
