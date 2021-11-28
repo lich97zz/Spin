@@ -86,7 +86,7 @@ end_func:
 }
 
 proctype outlet_valve(){
-{
+
 mtype action;
 again:	outlet_valve_action?action;
 		if :: (action==Open) -> {
