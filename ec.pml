@@ -49,6 +49,7 @@ again:	input ? in;
 		i = i+1;
 		if :: i>max_len -> goto end
 		   :: i<=max_len -> goto again
+		fi
 end:
 	printf("reaching maximum depth, manually end\n");	
 }
@@ -70,6 +71,7 @@ again:
 		i = i+1;
 		if :: i>max_len -> goto end
 		   :: i<=max_len -> goto again
+		fi
 end:
 	printf("reaching maximum depth, manually end\n");	
 }
