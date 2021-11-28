@@ -155,7 +155,8 @@ destination = destination_in;
 my_location = current_location;
 
 mtype action;
-again:	upstream_door_action ? action;
+again:	printf("again...\n");
+		
 		if :: end==1 -> {printf("Arrived the end with correct direction\n");
 						goto end_func;}
 		   :: (my_location==up_gate && destination==Upstream) -> end=1;
@@ -163,7 +164,8 @@ again:	upstream_door_action ? action;
 		   :: (my_location==up_gate && destination==Downstream) -> {
 				if :: upstream_door_open==0 -> {
 						upstream_door_action!Open;
-						printf("Boat sent msg to require upstream door open\n"); 
+						printf("Boat sent msg to require upstream door open\n");
+						door_ready?true;
 						my_location=inlock;
 						printf("Boat went from upstream to inlock\n");
 						}
@@ -176,7 +178,8 @@ again:	upstream_door_action ? action;
 		   :: (my_location==inlock && destination==Downstream) -> {
 		   		if :: downstream_door_open==0 -> {
 		   				downstream_door_action!Open;
-		   				printf("Boat sent msg to require downstream door open\n"); 
+		   				printf("Boat sent msg to require downstream door open\n");
+		   				door_ready?true;
 		   				my_location=down_gate;
 		   				printf("Boat went from inlock to down gate\n");
 		   				goto random_destination;
@@ -192,6 +195,7 @@ again:	upstream_door_action ? action;
 				if :: downstream_door_open==0 -> {
 						downstream_door_action!Open; 
 						printf("Boat sent msg to require downstream door open\n");
+						door_ready?true;
 						my_location=inlock;
 						printf("Boat went from down gate to inlock\n");
 						}
@@ -205,6 +209,7 @@ again:	upstream_door_action ? action;
 		   		if :: upstream_door_open==0 -> {
 		   				upstream_door_action!Open;
 		   				printf("Boat sent msg to require upstream door open\n");
+		   				door_ready?true;
 		   				my_location=up_gate;
 		   				printf("Boat went from inlock to upgate\n");
 		   				goto random_destination;
