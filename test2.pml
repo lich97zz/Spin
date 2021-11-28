@@ -232,8 +232,9 @@ again:	printf("again...\n");
 		goto again	
 
 random_destination:
-	if :: 1==1 -> {destination==Downstream;printf("Boat now heading downstream\n");}
-	   :: 1==1 -> {destination==Upstream;printf("Boat now heading upstream\n");}
+	printf("inside random\n");
+	if :: true -> {destination==Downstream;printf("Boat now heading downstream\n");}
+	   :: true -> {destination==Upstream;printf("Boat now heading upstream\n");}
 	fi;
 	goto again
 end_func:
