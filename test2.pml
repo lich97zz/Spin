@@ -89,7 +89,7 @@ end_func:
 proctype outlet_valve(){
 mtype action;
 again:	outlet_valve_action?action;
-		if :: (action==Open) -> atomic{
+		if :: (action==Open && outlet_valve_open==0) -> atomic{
 				outlet_valve_open=1;
 				printf("Outlet valve has opened\n");
 				}
