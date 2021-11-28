@@ -131,6 +131,29 @@ end_func:
 }
 
 
+proctype upstream_door() {
+mtype action;
+again:	upstream_door_action ? action;
+		if :: (action==Open) -> {
+				upstream_door_open=1;
+				printf("Up gate has opened\n");
+				door_ready ! true;
+				printf("Up gate sending msg to boat, informing it has opened\n");
+				}
+		   :: (action==Close) -> {
+		   		upstream_door_open=0;
+		   		printf("Up gate has closed\n");
+		   		inlet_valve_action ? Open;
+				printf("Up gate sending msg to inlet valve, asking it to open\n");
+		   		}
+		   :: end==1 -> goto end_func;
+		   :: skip;
+		fi;
+		goto again	
+end_func:
+
+}
+
 
 
 
