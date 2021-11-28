@@ -37,7 +37,7 @@ int upstream_level = 5;
 int downstream_level = 0;
 
 // Current water level in the lock
-int lock_water_level = 3;
+int lock_water_level = 0;
 // end state
 bool end = 0;
 
@@ -63,11 +63,36 @@ again:	if :: (upstream_door_open==1 || inlet_valve_open==1) -> {
 
 		goto again	
 end_func:
+}
+
+proctype inlet_valve(){
+again:	inlet_valve_action ? action
+		if :: (action==Open) -> {
+				inlet_valve_open=1;
+				printf("Inlet valve has opened\n");
+				}
+		   :: (upstream_level==lock_water_level) -> {
+		   		inlet_valve_open=0;
+				printf("Inlet valve has closed\n");
+				true ? valve_ready;
+		   		}
+		   :: end==1 -> goto end_func;
+		   :: skip;
+		fi;
+
+		goto again	
+end_func:
 
 }
+
 
 init {
      atomic {
             run lock();
+            //run upstream_door();
+            //run downstream_door();
+            //run outlet_valve();
+            run inlet_valve();
+            //run boat(up_gate, Downstream)
     }
 }
