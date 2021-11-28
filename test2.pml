@@ -63,7 +63,6 @@ again:
 		   :: end==1 -> goto end_func;
 		   :: skip;
 		fi;
-		timeout -> goto end_func
 		goto again	
 end_func:
 
@@ -82,7 +81,6 @@ again:	inlet_valve_action?action;
 				}
 		   :: end==1 -> goto end_func;
 		fi;
-		timeout -> goto end_func
 		goto again	
 end_func:
 
@@ -101,7 +99,6 @@ again:	outlet_valve_action?action;
 				}
 		   :: end==1 -> goto end_func;
 		fi;
-		timeout -> goto end_func
 		goto again	
 end_func:
 
@@ -124,7 +121,6 @@ again:	downstream_door_action ? action;
 		   		}
 		   :: end==1 -> goto end_func;
 		fi;
-		timeout -> goto end_func
 		goto again	
 end_func:
 
@@ -148,7 +144,6 @@ again:	upstream_door_action ? action;
 		   		inlet_valve_action ! Open;
 		   		}
 		fi;
-		timeout -> goto end_func
 		goto again	
 end_func:
 
@@ -234,7 +229,7 @@ again:
 				fi;
 		   		}
 		fi;
-		timeout -> goto end_func
+
 		goto again	
 
 random_destination:

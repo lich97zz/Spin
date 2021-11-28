@@ -42,7 +42,7 @@ int lock_water_level = 0;
 bool end = 0;
 
 proctype lock(){
-again:	
+do::	
 		if :: (upstream_door_open==1 || inlet_valve_open==1) -> atomic{
 				if :: lock_water_level<upstream_level -> {
 					lock_water_level=lock_water_level+1;
@@ -63,7 +63,8 @@ again:
 		   :: end==1 -> goto end_func;
 		   :: skip;
 		fi;
-		goto again	
+:: timeout -> goto end_func
+od	
 end_func:
 
 }
