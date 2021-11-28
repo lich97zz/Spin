@@ -1,12 +1,9 @@
 /* File: hw5.pml */
 
-ltl p2 { [] (upstream_door_open==1 && downstream_door_open==1)}
+
 
 mtype:heading = {Downstream, Upstream};
 mtype:loc = {down_gate, up_gate, inlock};
-
-
-
 
 chan upstream_door_action = [1] of {mtype}
 chan downstream_door_action = [1] of {mtype}
