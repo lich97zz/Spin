@@ -1,5 +1,6 @@
 /* File: hw5.pml */
 
+ltl p1 { !<> (upstream_door_open==1 && downstream_door_open==1)}
 
 mtype:heading = {Downstream, Upstream};
 mtype:loc = {down_gate, up_gate, inlock};
