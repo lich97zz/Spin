@@ -1,0 +1,10 @@
+[]P     - G P always
+<>P   - F P eventually
+P U Q - P is true until Q becomes true
+
+
+ltl p1 { [] (x>=0)}
+
+spin -a ec.pml
+gcc -o pan pan.c
+./pan -a

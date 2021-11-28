@@ -22,3 +22,13 @@ bool downstream_door_open = 1;
 int upstream_level = 5;
 int downstream_level = 0;
 int lock_water_level = 0;
+
+
+
+LTL 1
+ltl p1 { !<> (upstream_door_open==1 && downstream_door_open==1)}
+ltl p2 { [] ((upstream_door_open==1||downstream_door_open==1) ==>(inlet_valve_open==0 && outlet_valve_open==0))}
+ltl p3 { [] (my_location==inlock) U  ( ((my_location==up_gate)&&(lock_water_level==upstream_level)) ||   ((my_location==down_gate)&&(lock_water_level==downstream_level)))}
+
+(my_location==inlock) U  ( ((my_location==up_gate)&&(lock_water_level==upstream_level)) ||   ((my_location==down_gate)&&(lock_water_level==downstream_level)))
+ ==> 
