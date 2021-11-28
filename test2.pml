@@ -164,7 +164,7 @@ again:	printf("again...\n");
 		   :: (my_location==down_gate && destination==Downstream) -> end=1;
 		   :: (my_location==up_gate && destination==Downstream) -> {
 				if :: upstream_door_open==0 -> atomic{
-						downstream_door_open = Close;
+						downstream_door_open = 0;
 						printf("Downstream door closed\n");
 						inlet_valve_action ! Open;
 						door_ready?true;
