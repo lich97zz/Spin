@@ -6,5 +6,9 @@ P U Q - P is true until Q becomes true
 ltl p1 { [] (x>=0)}
 
 spin -a ec.pml
-gcc -o pan pan.c
+gcc ./pan.c
+./a.out -a
+
+
+ltl:  gcc -o pan pan.c
 ./pan -a
