@@ -1,33 +1,31 @@
 /* File: hw5.pml */
 
-
+ltl p2 { [] (upstream_door_open==1 && downstream_door_open==1)}
 
 mtype:heading = {Downstream, Upstream};
 mtype:loc = {down_gate, up_gate, inlock};
+mtype {Open, Close};
 
 chan upstream_door_action = [1] of {mtype}
 chan downstream_door_action = [1] of {mtype}
 chan inlet_valve_action = [1] of {mtype}
 chan outlet_valve_action = [1] of {mtype}
-
-
 chan door_ready = [0] of {bool}
 chan valve_ready = [0] of {bool}
 
 mtype:heading destination;
 mtype:loc my_location;
 
+bool end = 0;
 bool inlet_valve_open = 0;
 bool outlet_valve_open = 0;
-
 bool upstream_door_open = 0;
 bool downstream_door_open = 1;
 
 int upstream_level = 5;
 int downstream_level = 0;
-
 int lock_water_level = 0;
-bool end = 0;
+
 
 proctype lock(){
 {do::	
