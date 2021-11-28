@@ -79,7 +79,6 @@ again:	inlet_valve_action?action;
 				valve_ready ! true;
 		   		}
 		   :: end==1 -> goto end_func;
-		   :: skip;
 		fi;
 
 		goto again	
@@ -100,7 +99,6 @@ again:	outlet_valve_action?action;
 				valve_ready ! true;
 		   		}
 		   :: end==1 -> goto end_func;
-		   :: skip;
 		fi;
 		goto again	
 end_func:
@@ -123,7 +121,6 @@ again:	downstream_door_action ? action;
 				printf("Down gate sending msg to outlet valve, asking it to open\n");
 		   		}
 		   :: end==1 -> goto end_func;
-		   :: skip;
 		fi;
 		goto again	
 end_func:
@@ -134,7 +131,8 @@ end_func:
 proctype upstream_door() {
 mtype action;
 again:	upstream_door_action ? action;
-		if :: (action==Open) -> {
+		if :: end==1 -> goto end_func;
+		   :: (action==Open) -> {
 				upstream_door_open=1;
 				printf("Up gate has opened\n");
 				door_ready ! true;
@@ -146,8 +144,6 @@ again:	upstream_door_action ? action;
 		   		inlet_valve_action ? Open;
 				printf("Up gate sending msg to inlet valve, asking it to open\n");
 		   		}
-		   :: end==1 -> goto end_func;
-		   :: skip;
 		fi;
 		goto again	
 end_func:
@@ -160,39 +156,62 @@ my_location = current_location;
 
 mtype action;
 again:	upstream_door_action ? action;
-		if :: end==1 -> goto end_func;
+		if :: end==1 -> {printf("Arrived the end with correct direction\n");
+						goto end_func;}
 		   :: (my_location==up_gate && destination==Upstream) -> end=1;
 		   :: (my_location==down_gate && destination==Downstream) -> end=1;
 		   :: (my_location==up_gate && destination==Downstream) -> {
-				if :: upstream_door_open==0 -> {upstream_door_action!Open; my_location=inlock;}
-				   :: upstream_door_open==1 -> my_location=inlock;
+				if :: upstream_door_open==0 -> {
+						upstream_door_action!Open;
+						printf("Boat sent msg to require upstream door open\n"); 
+						my_location=inlock;
+						printf("Boat went from upstream to inlock\n");
+						}
+				   :: upstream_door_open==1 -> {
+				   		my_location=inlock;
+				   		printf("Boat went from upstream to inlock\n");
+				   		}
 				fi;
 				}
 		   :: (my_location==inlock && destination==Downstream) -> {
 		   		if :: downstream_door_open==0 -> {
 		   				downstream_door_action!Open;
+		   				printf("Boat sent msg to require downstream door open\n"); 
 		   				my_location=down_gate;
+		   				printf("Boat went from inlock to down gate\n");
 		   				goto random_destination;
 		   				}
 				   :: downstream_door_open==1 -> {
 				   		my_location==down_gate;
+				   		printf("Boat went from inlock to down gate\n");
 				   		goto random_destination;
 				   		}
 				fi;
 		   		}
 		   :: (my_location==down_gate && destination==Upstream) -> {
-				if :: downstream_door_open==0 -> {downstream_door_action!Open; my_location=inlock;}
-				   :: downstream_door_open==1 -> my_location=inlock;
+				if :: downstream_door_open==0 -> {
+						downstream_door_action!Open; 
+						printf("Boat sent msg to require downstream door open\n");
+						my_location=inlock;
+						printf("Boat went from down gate to inlock\n");
+						}
+				   :: downstream_door_open==1 -> {
+				   		my_location=inlock;
+				   		printf("Boat went from down gate to inlock\n");
+				   		}
 				fi;
 				}
 		   :: (my_location==inlock && destination==Upstream) -> {
 		   		if :: upstream_door_open==0 -> {
 		   				upstream_door_action!Open;
+		   				printf("Boat sent msg to require upstream door open\n");
 		   				my_location=up_gate;
+		   				printf("Boat went from inlock to upgate\n");
 		   				goto random_destination;
 		   				}
 				   :: upstream_door_open==1 -> {
 				   		my_location==up_gate;
+				   		printf("Boat went from inlock to upgate\n");
 				   		goto random_destination;
 				   		}
 				fi;
@@ -202,8 +221,8 @@ again:	upstream_door_action ? action;
 		goto again	
 
 random_destination:
-	if :: 1==1 -> destination==Downstream;
-	   :: 1==1 -> destination==Upstream;
+	if :: 1==1 -> {destination==Downstream;printf("Boat now heading downstream\n");}
+	   :: 1==1 -> {destination==Upstream;printf("Boat now heading upstream\n");}
 	fi;
 	goto again
 end_func:
