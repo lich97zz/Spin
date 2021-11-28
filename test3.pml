@@ -152,7 +152,9 @@ destination = destination_in;
 my_location = current_location;
 
 mtype action;
-again:	
+{do::	
+	0<1;
+	again:	
 		if :: end==1 -> {printf("Arrived the end with correct direction\n");
 						goto end_func;}
 		   :: (my_location==up_gate && destination==Upstream) -> end=1;
@@ -227,16 +229,16 @@ again:
 				fi;
 		   		}
 		fi;
-
-		goto again	
+:: timeout -> goto end_func
+od}	
 
 random_destination:
 	if :: true -> {destination=Downstream;printf("Boat now heading downstream\n");}
 	   :: true -> {destination=Upstream;printf("Boat now heading upstream\n");}
 	fi;
 	goto again
-end_func:
 
+end_func:
 }
 
 
