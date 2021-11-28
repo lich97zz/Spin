@@ -68,6 +68,7 @@ mtype action;
 				upstream_door_action ! Open;
 				}
 		   :: end==1 -> goto end_func;
+		   :: skip;
 		fi;
 	} :: skip;
 	fi
@@ -91,6 +92,7 @@ mtype action;
 				downstream_door_action ! Open;
 				}
 		   :: end==1 -> goto end_func;
+		   :: skip;
 		fi;
 	} :: skip;
 	fi
@@ -118,6 +120,7 @@ mtype action;
 		   		outlet_valve_action ! Open;
 		   		}
 		   :: end==1 -> goto end_func;
+		   :: skip;
 		fi;
 	} :: skip;
 	fi
@@ -146,6 +149,7 @@ mtype action;
 		   		printf("Up gate sending msg to inlet valve, asking it to open\n");
 		   		inlet_valve_action ! Open;
 		   		}
+		   	:: skip;
 		fi;
 	} :: skip;
 	fi
