@@ -8,7 +8,7 @@ chan input = [5] of {mtype};
 mtype buf[5];
 int idx = 0;
 int lock = 0;
-int max_len = 1000;
+int max_i = 1000;
 int i = 0;
 //for prop10
 mtype t1_in = req2;
@@ -30,7 +30,11 @@ ltl prop13 { [] ((([](<>t2_exec==1)) && (<>(t1_in==req1) && <>(t1_in==noop))) ==
 
 proctype thread1(){
 mtype in;
-again:	input ? in;
+again:	
+		if :: i>max_len -> goto end
+		   :: skip;
+		fi
+		input ? in;
 		t1_in = in;
 		if
 			:: in != noop -> {
@@ -47,16 +51,18 @@ again:	input ? in;
 			:: in == noop -> goto again;
 		fi;
 		i = i+1;
-		if :: i>max_len -> goto end
-		   :: i<=max_len -> goto again
-		fi
+		
+		goto again
 end:
-	printf("reaching maximum depth, manually end\n");	
+	printf("reaching maximum depth, manually end\n");		
 }
 
 proctype thread2(){
 mtype out;
 again:	
+		if :: i>max_len -> goto end
+		   :: skip;
+		fi
 		t2_exec = !t2_exec;
 		idx > 0;
 		atomic{
@@ -69,9 +75,7 @@ again:
 			
 		}
 		i = i+1;
-		if :: i>max_len -> goto end
-		   :: i<=max_len -> goto again
-		fi
+		goto again
 end:
 	printf("reaching maximum depth, manually end\n");	
 }
