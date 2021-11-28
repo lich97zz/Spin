@@ -166,6 +166,8 @@ again:	printf("again...\n");
 						upstream_door_action!Open;
 						printf("Boat sent msg to require upstream door open\n");
 						door_ready?true;
+						//modify
+						printf("door ready is red at pos1\n");
 						my_location=inlock;
 						printf("Boat went from upstream to inlock\n");
 						}
