@@ -1,7 +1,7 @@
 #ifndef N
 #define N 5
 #endif
-ltl prop13 { [] ((([](<>t2_exec==1)) && (<>(t1_in==req1) && <>([]t1_in==noop))) -> <>(t2_in==req1))}
+ltl prop13 { [] ((([](<>t2_exec==1)) && (<>(t1_in==req1) && <>([]t1_in==noop))) -> <>(t2_out==req1))}
 
 
 mtype = {noop, req1, req2};

@@ -2,13 +2,15 @@
 #define N 5
 #endif
 
+
+
+ltl prop10 { [] (t1_in==req1 -> <>(t2_out==req1))}
+
 mtype = {noop, req1, req2};
+
 //for prop10
 mtype t1_in = req2;
 mtype t2_out = req2;
-
-ltl prop10 { [] (t1_in==req1 -> <>(t2_in==req1))}
-
 
 chan input = [5] of {mtype};
 mtype buf[5];
