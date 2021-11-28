@@ -73,12 +73,11 @@ again:	inlet_valve_action?action;
 		if :: (action==Open) -> atomic{
 				inlet_valve_open=1;
 				printf("Inlet valve has opened\n");
-				}
-		   :: (inlet_valve_open==1 && upstream_level==lock_water_level) -> atomic{
-		   		inlet_valve_open=0;
+				upstream_level==lock_water_level;
+				inlet_valve_open=0;
 				printf("Inlet valve has closed\n");
 				upstream_door_action ? Open;
-		   		}
+				}
 		   :: end==1 -> goto end_func;
 		fi;
 
