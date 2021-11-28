@@ -37,6 +37,7 @@ again:	input ? in;
 				atomic{
 					lock = 1;
 					t1_idx = idx;
+					buf[idx]==req1 || buf[idx]==req2 || buf[idx]==noop;
 					input ? buf[idx];
 					idx = idx+1;
 					lock = 0;
