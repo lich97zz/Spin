@@ -57,20 +57,19 @@ end_func:
 proctype inlet_valve(){
 mtype action;
 {do::	
-	0<1;
-	if :: inlet_valve_action?action -> {
-		if :: (action==Open) -> atomic{
-				inlet_valve_open=1;
-				printf("Inlet valve has opened\n");
-				upstream_level==lock_water_level;
-				inlet_valve_open=0;
-				printf("Inlet valve has closed\n");
-				upstream_door_action ! Open;
-				}
-		   :: end==1 -> goto end_func;
-		fi;
-	} :: skip;
-	fi
+	inlet_valve_action?action;
+	if :: (action==Open) -> atomic{
+			inlet_valve_open=1;
+			printf("Inlet valve has opened\n");
+			upstream_level==lock_water_level;
+			inlet_valve_open=0;
+			printf("Inlet valve has closed\n");
+			upstream_door_action ! Open;
+			}
+	   :: end==1 -> goto end_func;
+	   :: (action!=Open && end!=1) -> skip;
+	fi;
+
 :: timeout -> goto end_func
 od}	
 end_func:
