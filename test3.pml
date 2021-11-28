@@ -1,5 +1,5 @@
 /* File: hw5.pml */
-
+ltl p1 { !<> (upstream_door_open==1 && downstream_door_open==1)}
 /* We will use the following types to keep track of the direction the
 boat is heading and the current location of the boat */
 mtype:heading = {Downstream, Upstream};

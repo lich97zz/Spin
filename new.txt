@@ -23,15 +23,7 @@ int upstream_level = 5;
 int downstream_level = 0;
 int lock_water_level = 0;
 
-	
-	//elif my_location=inlock and destination=Upstream
-	//	 if upstream_door_open=0 -> upstream_door_action ! Open, my_location=up_gate, destination=Downstream or Upstream
-	//	 else my_location=up_gate,  destination=Downstream or Upstream
 
-
-	//elif my_location=down_gate and destination=Upstream
-	//	 if downstream_door_open=0 -> downstream_door_action ! Open, my_location=inlock
-	//	 else my_location=inlock
 
 
 LTL 1
