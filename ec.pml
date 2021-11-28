@@ -8,7 +8,8 @@ chan input = [5] of {mtype};
 mtype buf[5];
 int idx = 0;
 int lock = 0;
-
+int max_i = 1000;
+int i = 0;
 //for prop10
 mtype t1_in = req2;
 mtype t2_out = req2;
@@ -45,13 +46,17 @@ again:	input ? in;
 			};
 			:: in == noop -> goto again;
 		fi;
-
-		goto again	
+		i = i+1;
+		if :: i>max_len -> goto end
+		   :: i<=max_len -> goto again
+end:
+	printf("reaching maximum depth, manually end\n");	
 }
 
 proctype thread2(){
 mtype out;
-again:	t2_exec = !t2_exec;
+again:	
+		t2_exec = !t2_exec;
 		idx > 0;
 		atomic{
 			lock = 1;
@@ -60,10 +65,13 @@ again:	t2_exec = !t2_exec;
 			t2_out = out;
 			idx = idx-1;
 			lock = 0;
+			
 		}
-
-
-		goto again	
+		i = i+1;
+		if :: i>max_len -> goto end
+		   :: i<=max_len -> goto again
+end:
+	printf("reaching maximum depth, manually end\n");	
 }
 
 active proctype fillRand(){
