@@ -220,6 +220,6 @@ init {
             run downstream_door();
             run outlet_valve();
             run inlet_valve();
-            //run boat(up_gate, Downstream)
+            run boat(up_gate, Downstream)
     }
 }
