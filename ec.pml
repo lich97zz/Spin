@@ -28,6 +28,7 @@ ltl prop13 { [] ((([](<>t2_exec==1)) && (<>(t1_in==req1) && <>(t1_in==noop))) ==
 */
 
 proctype thread1(){
+mtype input;
 again:	in ? input;
 		t1_in = in;
 		if
