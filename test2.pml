@@ -76,7 +76,7 @@ again:	inlet_valve_action?action;
 				upstream_level==lock_water_level;
 				inlet_valve_open=0;
 				printf("Inlet valve has closed\n");
-				upstream_door_action ? Open;
+				upstream_door_action ! Open;
 				}
 		   :: end==1 -> goto end_func;
 		fi;
