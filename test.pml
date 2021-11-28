@@ -7,6 +7,7 @@ mtype action;
 	
 	if :: (inlet_valve_action?action) -> action=Close;
 	   :: skip;
+	fi
 :: timeout -> goto end_func
 od}	
 end_func:
