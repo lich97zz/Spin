@@ -60,6 +60,7 @@ again:	printf("inside lock pos1");
 				fi;
 		   		}
 		   :: end==1 -> goto end_func;
+		   :: skip;
 		fi;
 
 		goto again	
