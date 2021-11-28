@@ -63,6 +63,7 @@ again:	if :: (upstream_door_open==1 || inlet_valve_open==1) -> {
 
 		goto again	
 end_func:
+
 }
 
 proctype inlet_valve(){
@@ -83,10 +84,10 @@ again:	inlet_valve_action?action;
 
 		goto again	
 end_func:
+
 }
 
 proctype outlet_valve(){
-
 mtype action;
 again:	outlet_valve_action?action;
 		if :: (action==Open) -> {
@@ -103,9 +104,10 @@ again:	outlet_valve_action?action;
 		fi;
 		goto again	
 end_func:
+
 }
 
-proctype downstream_door() {
+proctype downstream_door(){
 mtype action;
 again:	downstream_door_action ? action;
 		if :: (action==Open) -> {
