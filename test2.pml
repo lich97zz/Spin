@@ -92,12 +92,11 @@ again:	outlet_valve_action?action;
 		if :: (action==Open && outlet_valve_open==0) -> atomic{
 				outlet_valve_open=1;
 				printf("Outlet valve has opened\n");
-				}
-		   :: (downstream_level==lock_water_level && outlet_valve_open==1) -> atomic{
-		   		outlet_valve_open=0;
+				downstream_level==lock_water_level;
+				outlet_valve_open=0;
 				printf("Outlet valve has closed\n");
-				valve_ready ! true;
-		   		}
+				downstream_door_action ! Open;
+				}
 		   :: end==1 -> goto end_func;
 		fi;
 		goto again	
@@ -170,6 +169,7 @@ again:	printf("again...\n");
 						
 						my_location=inlock;
 						printf("Boat went from upstream to inlock\n");
+
 						}
 				   :: upstream_door_open==1 -> atomic{
 				   		my_location=inlock;
@@ -179,8 +179,10 @@ again:	printf("again...\n");
 				}
 		   :: (my_location==inlock && destination==Downstream) -> {
 		   		if :: downstream_door_open==0 -> atomic{
-		   				downstream_door_action!Open;
-		   				printf("Boat sent msg to require downstream door open\n");
+		   				upstream_door_open = 0;
+						printf("Upstream door closed\n");
+						outlet_valve_action ! Open;
+
 		   				door_ready?true;
 		   				my_location=down_gate;
 		   				printf("Boat went from inlock to down gate\n");
