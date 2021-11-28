@@ -58,7 +58,7 @@ proctype inlet_valve(){
 /* Your code modeling the inlet valve goes here */
 	// inlet_valve_action ? action
 	// if action==Open, inlet_valve_open=1
-	// if upstream_level==lock_water_level, inlet_valve_open=0, true?valve_ready
+	// if upstream_level==lock_water_level, inlet_valve_open=0, valve_ready!true
 	// else skip
 
 }
@@ -68,7 +68,7 @@ proctype outlet_valve(){
 /* Your code modeling the outlet valve goes here */
 	// outlet_valve_action ? action
 	// if action==Open, outlet_valve_open=1
-	// if downstream_level==lock_water_level, outlet_valve_open=0, true?valve_ready
+	// if downstream_level==lock_water_level, outlet_valve_open=0, valve_ready!true
 	// else skip
 }
 
@@ -84,14 +84,14 @@ proctype downstream_door() {
 /* Your code modeling the downstream door goes here */
 	//downstream_door_action ? action
 	//if action==Open, downstream_door_open=1, door_ready ! true
-	//if action==Close, downstream_door_open=0, outlet_valve_action ? Open
+	//if action==Close, downstream_door_open=0, outlet_valve_action ! Open
 }
 
 proctype upstream_door() {
 /* Your code modeling the upstream door goes here */
 	//upstream_door_action ? action
 	//if action==Open, upstream_door_open=1, door_ready ! true
-	//if action==Close, upstream_door_open=0, inlet_valve_action ? Open
+	//if action==Close, upstream_door_open=0, inlet_valve_action ! Open
 }
 
 /* Process for the boat. Will keep running forever*/
