@@ -1,6 +1,6 @@
 /* File: hw5.pml */
 
-ltl p3 { [] (my_location==inlock) U  ( ((my_location==up_gate)&&(lock_water_level==upstream_level)) ||   ((my_location==down_gate)&&(lock_water_level==downstream_level)))}
+ltl p3 { [] ( ( ((my_location==up_gate)&&(lock_water_level==upstream_level)) ||   ((my_location==down_gate)&&(lock_water_level==downstream_level)))  U  (my_location==inlock) )}
 
 mtype:heading = {Downstream, Upstream};
 mtype:loc = {down_gate, up_gate, inlock};
