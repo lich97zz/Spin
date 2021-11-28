@@ -245,10 +245,10 @@ end_func:
 init {
      atomic {
             run lock();
-            run upstream_door();
-            run downstream_door();
-            run outlet_valve();
-            run inlet_valve();
-            run boat(up_gate, Downstream)
+            //run upstream_door();
+            //run downstream_door();
+            //run outlet_valve();
+            //run inlet_valve();
+            //run boat(up_gate, Downstream)
     }
 }
