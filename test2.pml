@@ -48,7 +48,9 @@ again:
 					lock_water_level=lock_water_level+1;
 					printf("lock water level increased, now %d\n", lock_water_level);
 				}
+				   ::skip;
 				fi;
+
 				}
 		   :: (downstream_door_open==1 || outlet_valve_open==1) -> atomic{
 		   		if :: lock_water_level>downstream_level -> {
