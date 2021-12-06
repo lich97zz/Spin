@@ -23,13 +23,12 @@ bool downstream_door_open = 1;
 int upstream_level = 5;
 int downstream_level = 0;
 
-
+int counter = 0;
 int lock_water_level = 0;
 bool end = 0;
 
 proctype lock(){
 {do::	
-	0<1;
 	if :: (upstream_door_open==1 || inlet_valve_open==1) -> atomic{
 			if :: lock_water_level<upstream_level -> {
 				lock_water_level=lock_water_level+1;
@@ -60,8 +59,9 @@ end_func:
 proctype inlet_valve(){
 mtype action;
 {do
-    :: !timeout;
+    :: counter<100;
     if :: inlet_valve_action?action -> {
+    		counter=0;
 			if :: (action==Open) -> atomic{
 				inlet_valve_open=1;
 				printf("Inlet valve has opened\n");
@@ -74,9 +74,9 @@ mtype action;
 		   :: timeout -> goto end_func;
 			fi;
     	 }
-       :: skip;
+       :: {counter++;skip;}
     fi
-    :: timeout -> goto end_func
+    :: counter>=100; -> goto end_func
 od}
 
 end_func:
@@ -86,8 +86,9 @@ end_func:
 proctype outlet_valve(){
 mtype action;
 {do
-    :: !timeout;
+    :: counter<100;
     if :: outlet_valve_action?action -> {
+    		counter=0;
 			if :: (action==Open && outlet_valve_open==0) -> atomic{
 				outlet_valve_open=1;
 				printf("Outlet valve has opened\n");
@@ -100,20 +101,21 @@ mtype action;
 		   		:: timeout -> goto end_func;
 			fi;
     	 }
-       :: skip;
+       :: {counter++;skip;}
     fi
-    :: timeout -> goto end_func
+    :: counter>=100; -> goto end_func
 od}
 
 end_func:
-	//printf("pos3 released lock\n");
+	printf("pos3 released lock\n");
 }
 
 proctype downstream_door(){
 mtype action;
 {do
-    :: !timeout;
+    :: counter<100;
     if :: downstream_door_action ? action -> {
+    		counter=0;
 			if :: (action==Open) -> atomic{
 				downstream_door_open=1;
 				printf("Down gate has opened\n");
@@ -130,9 +132,9 @@ mtype action;
 		   :: end==1 -> goto end_func;
 			fi;
     	 }
-       :: skip;
+       :: {counter++;skip;}
     fi
-    :: timeout -> goto end_func
+    :: counter>=100; -> goto end_func
 od}
 
 end_func:
@@ -144,8 +146,9 @@ proctype upstream_door() {
 mtype action;
 
 {do
-    :: !timeout;
+    :: counter<100;
     if :: upstream_door_action ? action -> {
+    		counter=0;
 			if :: end==1 -> goto end_func;
 			   :: (action==Open) -> atomic{
 					upstream_door_open=1;
@@ -162,9 +165,9 @@ mtype action;
 			fi;
     	 }
        :: timeout -> goto end_func
-       :: skip;
+       :: {counter++;skip;}
     fi
-    :: timeout -> goto end_func
+    :: counter>=100; -> goto end_func
 od}
 
 end_func:
