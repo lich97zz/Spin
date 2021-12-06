@@ -1,6 +1,17 @@
 /* File: hw5.pml */
 
-ltl p3 { [] ( ( ((my_location==up_gate)&&(lock_water_level==upstream_level)) ||   ((my_location==down_gate)&&(lock_water_level==downstream_level)))  U (my_location==inlock) )}
+// This is equivalent to
+// bool up_gate_condition = (my_location==up_gate)&&(lock_water_level==upstream_level)
+// bool down_gate_condition = (my_location==down_gate)&&(lock_water_level==downstream_level)
+// P = (up_gate_conditionU(my_location==inlock)) || (down_gate_conditionU(my_location==inlock))
+// [] P
+
+//ltl p3 { [] ( ( ((my_location==up_gate)&&(lock_water_level==upstream_level)) ||   ((my_location==down_gate)&&(lock_water_level==downstream_level)))  U (my_location==inlock) )}
+
+ltl p3 { [] ( ( ((my_location==up_gate)&&(lock_water_level==upstream_level)) ||   ((my_location==down_gate)&&(lock_water_level==downstream_level)))  U (entering_lock==true) )}
+
+//ltl p3 { [] (lock_water_level==upstream_level || lock_water_level==downstream_level) U (my_location==inlock)}
+
 mtype:heading = {Downstream, Upstream};
 mtype:loc = {down_gate, up_gate, inlock};
 mtype {Open, Close};
@@ -15,6 +26,7 @@ chan valve_ready = [0] of {bool}
 mtype:heading destination;
 mtype:loc my_location;
 
+bool entering_lock = 0;
 bool inlet_valve_open = 0;
 bool outlet_valve_open = 0;
 bool upstream_door_open = 0;
@@ -190,11 +202,14 @@ again:
 						
 						my_location=inlock;
 						printf("Boat went from upstream to inlock\n");
-
+						entering_lock = true;
+						entering_lock = false;
 						}
 				   :: upstream_door_open==1 -> atomic{
 				   		my_location=inlock;
 				   		printf("Boat went from upstream to inlock\n");
+				   		entering_lock = true;
+						entering_lock = false;
 				   		}
 				fi;
 				}
@@ -224,10 +239,14 @@ again:
 						outlet_valve_action ! Open;
 						door_ready?true;
 						my_location=inlock;
+						entering_lock = true;
+						entering_lock = false;
 						printf("Boat went from down gate to inlock\n");
 						}
 				   :: downstream_door_open==1 -> atomic{
 				   		my_location=inlock;
+				   		entering_lock = true;
+						entering_lock = false;
 				   		printf("Boat went from down gate to inlock\n");
 				   		}
 				fi;
