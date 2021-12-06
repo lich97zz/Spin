@@ -48,6 +48,7 @@ proctype lock(){
 			fi;
 	   		}
 	   :: end==1 -> goto end_func;
+	   :: timeout -> goto end_func;
 	   :: skip;
 	fi;
 :: timeout -> goto end_func
@@ -70,6 +71,7 @@ mtype action;
 				upstream_door_action ! Open;
 				}
 		   :: end==1 -> goto end_func;
+		   :: timeout -> goto end_func;
 			fi;
     	 }
        :: skip;
@@ -95,6 +97,7 @@ mtype action;
 				downstream_door_action ! Open;
 				}
 		   		:: end==1 -> goto end_func;
+		   		:: timeout -> goto end_func;
 			fi;
     	 }
        :: skip;
@@ -123,6 +126,7 @@ mtype action;
 		   		printf("Down gate sending msg to outlet valve, asking it to open\n");
 		   		outlet_valve_action ! Open;
 		   		}
+		   :: timeout -> goto end_func
 		   :: end==1 -> goto end_func;
 			fi;
     	 }
@@ -157,6 +161,7 @@ mtype action;
 				   	}
 			fi;
     	 }
+       :: timeout -> goto end_func
        :: skip;
     fi
     :: timeout -> goto end_func
@@ -255,7 +260,7 @@ random_destination:
 	fi;
 	goto again
 end_func:
-
+	printf("pos6 released lock\n");
 }
 
 
