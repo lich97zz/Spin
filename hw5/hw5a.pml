@@ -83,8 +83,10 @@ end_func:
 
 proctype outlet_valve(){
 mtype action;
-again:	outlet_valve_action?action;
-		if :: (action==Open && outlet_valve_open==0) -> atomic{
+{do
+    :: !timeout;
+    if :: outlet_valve_action?action -> {
+			if :: (action==Open && outlet_valve_open==0) -> atomic{
 				outlet_valve_open=1;
 				printf("Outlet valve has opened\n");
 				downstream_level==lock_water_level;
@@ -92,17 +94,24 @@ again:	outlet_valve_action?action;
 				printf("Outlet valve has closed\n");
 				downstream_door_action ! Open;
 				}
-		   :: end==1 -> goto end_func;
-		fi;
-		goto again	
-end_func:
+		   		:: end==1 -> goto end_func;
+			fi;
+    	 }
+       :: skip;
+    fi
+    :: timeout -> goto end_func
+od}
 
+end_func:
+	printf("pos3 released lock\n");
 }
 
 proctype downstream_door(){
 mtype action;
-again:	downstream_door_action ? action;
-		if :: (action==Open) -> atomic{
+{do
+    :: !timeout;
+    if :: downstream_door_action ? action -> {
+			if :: (action==Open) -> atomic{
 				downstream_door_open=1;
 				printf("Down gate has opened\n");
 				printf("Down gate sending msg to boat, informing it has opened\n");
@@ -115,33 +124,46 @@ again:	downstream_door_action ? action;
 		   		outlet_valve_action ! Open;
 		   		}
 		   :: end==1 -> goto end_func;
-		fi;
-		goto again	
-end_func:
+			fi;
+    	 }
+       :: skip;
+    fi
+    :: timeout -> goto end_func
+od}
 
+end_func:
+	printf("pos4 released lock\n");
 }
 
 
 proctype upstream_door() {
 mtype action;
-again:	upstream_door_action ? action;
-		if :: end==1 -> goto end_func;
-		   :: (action==Open) -> atomic{
-				upstream_door_open=1;
-				printf("Up gate has opened\n");
-				printf("Up gate sending msg to boat, informing it has opened\n");
-				door_ready ! true;
-				}
-		   :: (action==Close) -> atomic{
-		   		upstream_door_open=0;
-		   		printf("Up gate has closed\n");
-		   		printf("Up gate sending msg to inlet valve, asking it to open\n");
-		   		inlet_valve_action ! Open;
-		   		}
-		fi;
-		goto again	
-end_func:
 
+{do
+    :: !timeout;
+    if :: upstream_door_action ? action -> {
+			if :: end==1 -> goto end_func;
+			   :: (action==Open) -> atomic{
+					upstream_door_open=1;
+					printf("Up gate has opened\n");
+					printf("Up gate sending msg to boat, informing it has opened\n");
+					door_ready ! true;
+					}
+			   :: (action==Close) -> atomic{
+			   		upstream_door_open=0;
+			   		printf("Up gate has closed\n");
+			   		printf("Up gate sending msg to inlet valve, asking it to open\n");
+			   		inlet_valve_action ! Open;
+				   	}
+			fi;
+    	 }
+       :: skip;
+    fi
+    :: timeout -> goto end_func
+od}
+
+end_func:
+	printf("pos5 released lock\n");
 }
 
 proctype boat(mtype:loc current_location; mtype:heading destination_in) {
@@ -152,8 +174,8 @@ mtype action;
 again:	
 		if :: end==1 -> {printf("Arrived the end with correct direction\n");
 						goto end_func;}
-		   :: (my_location==up_gate && destination==Upstream) -> end=1;
-		   :: (my_location==down_gate && destination==Downstream) -> end=1;
+		   :: (my_location==up_gate && destination==Upstream) -> {end=1; printf("pos* set end 1\n")}
+		   :: (my_location==down_gate && destination==Downstream) -> {end=1; printf("pos* set end 1\n")}
 		   :: (my_location==up_gate && destination==Downstream) -> {
 				if :: upstream_door_open==0 -> atomic{
 						downstream_door_open = 0;
