@@ -7,7 +7,7 @@ proctype inlet_valve(){
 mtype action;
 {do::
 	0<1;	
-	::if :: (inlet_valve_action?action) -> action=Close;
+	::if :: inlet_valve_action?action -> action=Close;
 	   	 :: skip;
 	  fi
 	:: timeout -> goto end_func
