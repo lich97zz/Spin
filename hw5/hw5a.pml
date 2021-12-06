@@ -50,7 +50,7 @@ again:
 	   		}
 	   :: end==1 -> goto end_func;
 	   :: timeout -> goto end_func;
-	   :: {count++;skip;}
+	   :: {counter++;skip;}
 	fi;
 	:: counter>=100 -> goto end_func
 	goto again
