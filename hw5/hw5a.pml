@@ -21,7 +21,7 @@ int downstream_level = 0;
 int counter = 0;
 int lock_water_level = 0;
 bool end = 0;
-
+bool entering_lock = 0;
 proctype lock(){
 {do::	
 	0<1;
@@ -195,10 +195,14 @@ again:
 						
 						my_location=inlock;
 						printf("Boat went from upstream to inlock\n");
+						entering_lock = true;
+						entering_lock = false;
 						}
 				   :: upstream_door_open==1 -> atomic{
 				   		my_location=inlock;
 				   		printf("Boat went from upstream to inlock\n");
+				   		entering_lock = true;
+						entering_lock = false;
 				   		}
 				fi;
 				}
@@ -227,10 +231,14 @@ again:
 						door_ready?true;
 						my_location=inlock;
 						printf("Boat went from down gate to inlock\n");
+						entering_lock = true;
+						entering_lock = false;
 						}
 				   :: downstream_door_open==1 -> atomic{
 				   		my_location=inlock;
 				   		printf("Boat went from down gate to inlock\n");
+				   		entering_lock = true;
+						entering_lock = false;
 				   		}
 				fi;
 				}
