@@ -1,5 +1,8 @@
 /* File: hw5.pml */
 
+//ltl p3 { [] ( ( ((my_location==up_gate)&&(lock_water_level==upstream_level)) ||   ((my_location==down_gate)&&(lock_water_level==downstream_level)))  U (entering_lock==true) )}
+
+ltl p3 { <> (entering_lock==true)}
 
 mtype:heading = {Downstream, Upstream};
 mtype:loc = {down_gate, up_gate, inlock};
@@ -19,6 +22,7 @@ bool inlet_valve_open = 0;
 bool outlet_valve_open = 0;
 bool upstream_door_open = 0;
 bool downstream_door_open = 1;
+bool entering_lock = 0;
 
 int upstream_level = 5;
 int downstream_level = 0;
@@ -195,11 +199,14 @@ again:
 						
 						my_location=inlock;
 						printf("Boat went from upstream to inlock\n");
-
+						entering_lock = true;
+						entering_lock = false;
 						}
 				   :: upstream_door_open==1 -> atomic{
 				   		my_location=inlock;
 				   		printf("Boat went from upstream to inlock\n");
+				   		entering_lock = true;
+						entering_lock = false;
 				   		}
 				fi;
 				}
@@ -230,10 +237,14 @@ again:
 						door_ready?true;
 						my_location=inlock;
 						printf("Boat went from down gate to inlock\n");
+						entering_lock = true;
+						entering_lock = false;
 						}
 				   :: downstream_door_open==1 -> atomic{
 				   		my_location=inlock;
 				   		printf("Boat went from down gate to inlock\n");
+				   		entering_lock = true;
+						entering_lock = false;
 				   		}
 				fi;
 				}
