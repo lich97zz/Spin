@@ -54,7 +54,7 @@ proctype lock(){
 :: timeout -> goto end_func
 od}	
 end_func:
-	printf("pos1 released lock\n");
+	//printf("pos1 released lock\n");
 }
 
 proctype inlet_valve(){
@@ -80,7 +80,7 @@ mtype action;
 od}
 
 end_func:
-	printf("pos2 released lock\n");
+	//printf("pos2 released lock\n");
 }
 
 proctype outlet_valve(){
@@ -106,7 +106,7 @@ mtype action;
 od}
 
 end_func:
-	printf("pos3 released lock\n");
+	//printf("pos3 released lock\n");
 }
 
 proctype downstream_door(){
@@ -136,7 +136,7 @@ mtype action;
 od}
 
 end_func:
-	printf("pos4 released lock\n");
+	//printf("pos4 released lock\n");
 }
 
 
@@ -168,7 +168,7 @@ mtype action;
 od}
 
 end_func:
-	printf("pos5 released lock\n");
+	//printf("pos5 released lock\n");
 }
 
 proctype boat(mtype:loc current_location; mtype:heading destination_in) {
@@ -179,8 +179,8 @@ mtype action;
 again:	
 		if :: end==1 -> {printf("Arrived the end with correct direction\n");
 						goto end_func;}
-		   :: (my_location==up_gate && destination==Upstream) -> {end=1; printf("pos* set end 1\n")}
-		   :: (my_location==down_gate && destination==Downstream) -> {end=1; printf("pos* set end 1\n")}
+		   :: (my_location==up_gate && destination==Upstream) -> {end=1; /*printf("pos* set end 1\n")*/}
+		   :: (my_location==down_gate && destination==Downstream) -> {end=1;/*printf("pos* set end 1\n")*/}
 		   :: (my_location==up_gate && destination==Downstream) -> {
 				if :: upstream_door_open==0 -> atomic{
 						downstream_door_open = 0;
@@ -260,7 +260,7 @@ random_destination:
 	fi;
 	goto again
 end_func:
-	printf("pos6 released lock\n");
+	//printf("pos6 released lock\n");
 }
 
 
