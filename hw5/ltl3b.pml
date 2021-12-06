@@ -34,7 +34,7 @@ bool end = 0;
 proctype lock(){
 again:	
 	if :: (upstream_door_open==1 || inlet_valve_open==1) -> atomic{
-			count = 0;
+			counter = 0;
 			if :: lock_water_level<upstream_level -> {
 				lock_water_level=lock_water_level+1;
 				printf("lock water level increased, now %d\n", lock_water_level);
@@ -44,7 +44,7 @@ again:
 
 			}
 	   :: (downstream_door_open==1 || outlet_valve_open==1) -> atomic{
-	   		count = 0;
+	   		counter = 0;
 	   		if :: lock_water_level>downstream_level -> {
 				lock_water_level=lock_water_level-1;
 				printf("lock water level decreased, now %d\n", lock_water_level);
@@ -56,7 +56,7 @@ again:
 	   :: timeout -> goto end_func;
 	   :: {count++;skip;}
 	fi;
-	:: count>=100 -> goto end_func
+	:: counter>=100 -> goto end_func
 	goto again
 end_func:
 	//printf("pos1 released lock\n");
