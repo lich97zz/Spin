@@ -1,3 +1,5 @@
+mtype:heading = {Downstream, Upstream};
+mtype:loc = {down_gate, up_gate, inlock};
 mtype {Open, Close};
 chan inlet_valve_action = [1] of {mtype}
 
