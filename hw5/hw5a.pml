@@ -28,7 +28,8 @@ int lock_water_level = 0;
 bool end = 0;
 
 proctype lock(){
-again:	
+{do::
+	counter<100;	
 	if :: (upstream_door_open==1 || inlet_valve_open==1) -> atomic{
 			counter = 0;
 			if :: lock_water_level<upstream_level -> {
@@ -53,7 +54,7 @@ again:
 	   :: {counter++;skip;}
 	fi;
 	:: counter>=100 -> goto end_func
-	goto again
+od}
 end_func:
 	//printf("pos1 released lock\n");
 }
