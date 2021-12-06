@@ -3,7 +3,8 @@ chan inlet_valve_action = [1] of {mtype}
 
 proctype inlet_valve(){
 mtype action;
-{do	
+{do::
+	0<1;	
 	::if :: (inlet_valve_action?action) -> action=Close;
 	   	 :: skip;
 	  fi
