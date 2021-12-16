@@ -8,7 +8,7 @@ chan input = [5] of {mtype};
 mtype buf[5];
 int idx = 0;
 int lock = 0;
-int max_len = 1000;
+int max_len = 50;
 int i = 0;
 //for prop10
 mtype t1_in = req2;

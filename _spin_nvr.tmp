@@ -1,0 +1,79 @@
+never prop1 {    /* !(! (<> (((mutex[0]@critical)) && ((mutex[1]@critical))))) */
+T0_init:
+	do
+	:: atomic { ((((mutex[0]@critical)) && ((mutex[1]@critical)))) -> assert(!((((mutex[0]@critical)) && ((mutex[1]@critical))))) }
+	:: (1) -> goto T0_init
+	od;
+accept_all:
+	skip
+}
+never prop2 {    /* !([] ((! (((mutex[0]@trying)) || ((mutex[1]@trying)))) || (<> (((mutex[0]@critical)) || ((mutex[1]@critical)))))) */
+T0_init:
+	do
+	:: (! ((! (((mutex[0]@trying)) || ((mutex[1]@trying))))) && ! ((((mutex[0]@critical)) || ((mutex[1]@critical))))) -> goto accept_S4
+	:: (1) -> goto T0_init
+	od;
+accept_S4:
+	do
+	:: (! ((((mutex[0]@critical)) || ((mutex[1]@critical))))) -> goto accept_S4
+	od;
+}
+never prop3 {    /* !((! ((([] (<> ((mutex[0]@trying)))) || ((_last==0))) && (([] (<> ((mutex[1]@trying)))) || ((_last==1))))) || ((! ((mutex[0]@trying))) || ((mutex[0]@critical)))) */
+T0_init:
+	do
+	:: (! (((! ((mutex[0]@trying))) || ((mutex[0]@critical)))) && ((mutex[0]@trying)) && ((mutex[1]@trying))) -> goto accept_S10
+	:: (! (((! ((mutex[0]@trying))) || ((mutex[0]@critical)))) && ((mutex[0]@trying))) -> goto T1_S318
+	:: (! (((! ((mutex[0]@trying))) || ((mutex[0]@critical)))) && ((_last==1)) && ((mutex[0]@trying))) -> goto accept_S316
+	:: (! (((! ((mutex[0]@trying))) || ((mutex[0]@critical))))) -> goto T0_S318
+	:: (! (((! ((mutex[0]@trying))) || ((mutex[0]@critical)))) && ((_last==1))) -> goto T0_S316
+	:: (! (((! ((mutex[0]@trying))) || ((mutex[0]@critical)))) && ((_last==0)) && ((mutex[1]@trying))) -> goto accept_S368
+	:: (! (((! ((mutex[0]@trying))) || ((mutex[0]@critical)))) && ((_last==0))) -> goto T0_S368
+	:: atomic { (! (((! ((mutex[0]@trying))) || ((mutex[0]@critical)))) && ((_last==0)) && ((_last==1))) -> assert(!(! (((! ((mutex[0]@trying))) || ((mutex[0]@critical)))) && ((_last==0)) && ((_last==1)))) }
+	od;
+accept_S10:
+	do
+	:: (((mutex[0]@trying)) && ((mutex[1]@trying))) -> goto T0_S10
+	:: (1) -> goto T0_S318
+	od;
+accept_S318:
+	do
+	:: (1) -> goto T0_S318
+	od;
+accept_S316:
+	do
+	:: (1) -> goto T0_S316
+	od;
+accept_S368:
+	do
+	:: (1) -> goto T0_S368
+	od;
+T1_S318:
+	do
+	:: (1) -> goto T1_S318
+	:: (((mutex[1]@trying))) -> goto accept_S318
+	od;
+T0_S10:
+	do
+	:: (((mutex[0]@trying)) && ((mutex[1]@trying))) -> goto accept_S10
+	:: (((mutex[0]@trying))) -> goto T1_S318
+	:: (1) -> goto T0_S318
+	od;
+T0_S318:
+	do
+	:: (((mutex[0]@trying))) -> goto T1_S318
+	:: (((mutex[0]@trying)) && ((mutex[1]@trying))) -> goto accept_S318
+	:: (1) -> goto T0_S318
+	od;
+T0_S316:
+	do
+	:: (((mutex[0]@trying))) -> goto accept_S316
+	:: (1) -> goto T0_S316
+	od;
+T0_S368:
+	do
+	:: (((mutex[1]@trying))) -> goto accept_S368
+	:: (1) -> goto T0_S368
+	od;
+accept_all:
+	skip
+}

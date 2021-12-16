@@ -3,7 +3,7 @@
  */
 ltl prop1 { !<> (mutex[0]@critical && mutex[1]@critical)}
 ltl prop2 { [] ((mutex[0]@trying || mutex[1]@trying) -> <>(mutex[0]@critical || mutex[1]@critical)) }
-ltl prop3 { ((([] (<>mutex[0]@trying)) || _last==0) && (([] (<>mutex[1]@trying)) || _last==1)) -> (mutex[0]@trying -> mutex[0]@critical) }
+ltl prop3 { [] (((([] (<>mutex[0]@trying)) || _last==0) && (([] (<>mutex[1]@trying)) || _last==1)) -> (mutex[0]@trying -> mutex[0]@critical) || (mutex[1]@trying -> mutex[0]@critical))}
 //both run infinitely often
 // (([] (<>mutex[0]@trying)) || _last==0)
 //  &&

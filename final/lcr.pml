@@ -1,17 +1,27 @@
 /**
  * File: lcr.pml
  */
+#define N 5
+#define BUFSIZE 10
 
 ltl prop1 {<> (num_leaders==1)}
 ltl prop2 {!<> (num_leaders>1)}
-ltl prop3 {((leader_id==0 && num_leaders==1) -> <>([] leader_id==0)) || ((leader_id==1 && num_leaders==1) -> <>([] leader_id==1)) || ((leader_id==2 && num_leaders==1) -> <>([] leader_id==2)) || ((leader_id==3 && num_leaders==1) -> <>([] leader_id==3)) || ((leader_id==4 && num_leaders==1) -> <>([] leader_id==4))}
-//((leader_id==0 && num_leaders==1) -> <>([] leader_id==0)) ||
-//((leader_id==1 && num_leaders==1) -> <>([] leader_id==1)) ||
-//((leader_id==2 && num_leaders==1) -> <>([] leader_id==2)) ||
-//((leader_id==3 && num_leaders==1) -> <>([] leader_id==3)) ||
-//((leader_id==4 && num_leaders==1) -> <>([] leader_id==4))
-#define N 5
-#define BUFSIZE 10
+
+//I have no idea how to access leader variable id, so I used a global variable
+// cur_leader to be a copy of leader_id
+ltl prop3 {[] (
+	  ((cur_leader==0 && num_leaders==1) -> <>([] cur_leader==0)) ||
+	  ((cur_leader==1 && num_leaders==1) -> <>([] cur_leader==1)) ||
+	  ((cur_leader==2 && num_leaders==1) -> <>([] cur_leader==2)) ||
+          ((cur_leader==3 && num_leaders==1) -> <>([] cur_leader==3)) ||
+          ((cur_leader==4 && num_leaders==1) -> <>([] cur_leader==4))
+	   )}
+//ltl prop3 {((leader_id==0 && num_leaders==1) -> <>([] leader_id==0)) || ((leader_id==1 && num_leaders==1) -> <>([] leader_id==1)) || ((leader_id==2 && num_leaders==1) -> <>([] leader_id==2)) || ((leader_id==3 && num_leaders==1) -> <>([] leader_id==3)) || ((leader_id==4 && num_leaders==1) -> <>([] leader_id==4))}
+//((cur_leader==0 && num_leaders==1) -> <>([] cur_leader==0)) ||
+//((cur_leader==1 && num_leaders==1) -> <>([] cur_leader==1)) ||
+//((cur_leader==2 && num_leaders==1) -> <>([] cur_leader==2)) ||
+//((cur_leader==3 && num_leaders==1) -> <>([] cur_leader==3)) ||
+//((cur_leader==4 && num_leaders==1) -> <>([] cur_leader==4))
 
 mtype = { candidate, leader };
 
@@ -19,6 +29,7 @@ mtype = { candidate, leader };
 chan c[N] = [BUFSIZE] of { mtype, byte };
 
 byte num_leaders = 0;
+byte cur_leader = 0;
 
 proctype node(chan prev, next; byte my_id)
 {
@@ -55,6 +66,7 @@ elected:
                     assert(my_id == leader_id);
                     break;
             fi
+	    cur_leader = leader_id;
     od;
     assert(num_leaders == 1); // NOTE: if more than one node
                               // declares itself as leader, then
